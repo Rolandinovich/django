@@ -1,0 +1,15 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?b?0J/QvtC00YLQstC10YDQttC00LXQvdC40LUg0YPRh9C10YLQvdC+0Lkg0LfQsNC/?=
+ =?utf-8?b?0LjRgdC4IHF3ZQ==?=
+From: django@geekshop.local
+To: mromanmail@g.com
+Date: Wed, 09 Jan 2019 12:17:10 -0000
+Message-ID: 
+ <154703623008.1204.14489467057622870129@sapr_roman.tatpromteh.local>
+
+Для подтверждения учетной записи qwe на портале     http://localhost:8000 перейдите по ссылке: 
+http://localhost:8000/auth/verify/mromanmail@g.com/1f64fc475ce91b5bf53f84c1752ea4870e361ae4/
+-------------------------------------------------------------------------------
