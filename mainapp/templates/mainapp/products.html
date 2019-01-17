@@ -1,0 +1,222 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+Магазин списком
+{% endblock %}
+
+{% block page_content %}
+<!-- START PAGE-CONTENT -->
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- CATEGORY-MENU-LIST START -->
+                {% include 'mainapp/master_pages/categories.html' %}
+                <!-- END CATEGORY-MENU-LIST -->
+            </div>
+            <div class="col-md-9">
+                <!-- START PRODUCT-AREA -->
+                <div class="product-area">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- Start Product-Menu -->
+                            <div class="product-menu">
+                                <div class="product-title">
+                                    <h3 class="title-group-3 gfont-1">{{ category_title }}</h3>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <!-- Start Product -->
+                            <div class="product">
+                                <div class="tab-content">
+                                    <!-- Product -->
+                                    <div role="tabpanel" class="tab-pane fade in active" id="display-1-1">
+                                        <div class="row">
+                                            <div class="listview">
+                                                <!-- Start Single-Product -->
+                                                {% for product in products %}
+                                                <div class="single-product">
+                                                    <div class="col-md-3 col-sm-4 col-xs-12">
+                                                        {% if product.new %}
+                                                        <div class="label_new">
+                                                            <span class="new">new</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="product-img">
+                                                            <a href="{% url 'mainapp:product_details' product.pk %}">
+                                                                <img class="primary-img"
+                                                                     src="{{ product.image.url }}"
+                                                                     alt="Product">
+                                                                <img class="secondary-img"
+                                                                     src="{{ product.image2.url }}"
+                                                                     alt="Product">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9 col-sm-8 col-xs-12">
+                                                        <div class="product-description">
+                                                            <h5>
+                                                                <a href="{% url 'mainapp:product_details' product.pk %}">
+                                                                    {{product.title }}</a></h5>
+                                                            <div class="price-box">
+                                                                <span class="price">{{ product.cost }} &#x20BD;</span>
+                                                                {% if product.oldcost %}
+                                                                <span class="old-price">{{ product.oldcost }} &#x20BD;</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <p class="description">{{ product.shortdescription }} </p>
+                                                            <div class="product-action">
+                                                                <div class="button-group">
+                                                                    <div class="quick-add-to-cart">
+                                                                        <form method="POST" class="cart"
+                                                                              action="{% url 'cartapp:add' product.pk %}">
+                                                                            {% csrf_token %}
+                                                                            {{ cart_quantity.as_p }}
+                                                                            <button class="single_add_to_cart_button"
+                                                                                    type="submit">В корзину
+                                                                            </button>
+                                                                            <div class="product-button-2">
+                                                                                <a href="{% url 'wishapp:add' product.pk %}"
+                                                                                   data-toggle="tooltip"
+                                                                                   title="В избранное"><i
+                                                                                        class="fa fa-heart-o"></i></a>
+                                                                                <a href="#" class="modal-view"
+                                                                                   data-toggle="modal"
+                                                                                   data-target="#productModal{{ product.pk }}"
+                                                                                   title="Просмотр"><i
+                                                                                        class="fa fa-search-plus"></i></a>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <!-- End Single-Product -->
+                                            </div>
+                                            <!-- Start Pagination Area -->
+                                            <div class="pagination-area">
+                                                <div class="row">
+                                                    <div class="col-xs-5">
+                                                        <div class="pagination">
+                                                            <ul>
+                                                                {% if products.has_previous %}
+                                                                <li><a href="?page={{ products.previous_page_number }}"><</a>
+                                                                </li>
+                                                                {% endif %}
+                                                                {% for num in products.paginator.page_range %}
+                                                                {% if products.number == num %}
+                                                                <li class="active">
+                                                                    <a href="?page={{ num }}">
+                                                                        {{ num }}
+                                                                    </a>
+                                                                </li>
+                                                                {% else %}
+                                                                <li>
+                                                                    <a href="?page={{ num }}">
+                                                                        {{ num }}
+                                                                    </a>
+                                                                </li>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                                {% if products.has_next %}
+                                                                <li>
+                                                                    <a href="?page={{ products.next_page_number }}">></a>
+                                                                </li>
+                                                                {% endif %}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-7">
+                                                        <div class="product-result">
+                                                            <span>
+                                                               Показано c {{products.start_index }}
+                                                                по {{products.end_index }}
+                                                                из {{products.paginator.count}}
+                                                                ({{products.paginator.num_pages}} Страниц)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Pagination Area -->
+                                        </div>
+                                        <!-- End Product = TV -->
+                                    </div>
+                                </div>
+                                <!-- End Product -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PRODUCT-AREA -->
+                </div>
+            </div>
+        </div>
+</section>
+<!-- END PAGE-CONTENT -->
+{% endblock %}
+
+{% block product_modal %}
+
+{% for product in products %}
+<!-- QUICKVIEW PRODUCT -->
+<div id="quickview-wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ product.pk }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-product">
+                        <div class="product-images">
+                            <div class="main-image images">
+                                <img alt="#" src="{{ product.image.url }}"/>
+                            </div>
+                        </div><!-- .product-images -->
+
+                        <div class="product-info">
+                            <h1>{{ product.title }}</h1>
+                            <div class="price-box-3">
+                                <hr/>
+                                <div class="s-price-box">
+                                    <span class="new-price">{{ product.cost }}</span>
+                                    {% if product.oldcost %}
+                                    <span class="old-price">{{ product.oldcost }}</span>
+                                    {% endif %}
+                                </div>
+                                <hr/>
+                            </div>
+                            <a href="{% url 'mainapp:product_details' product.pk %}" class="see-all">Подробнее</a>
+                            <div class="quick-add-to-cart">
+                                <form method="POST" class="cart" action="{% url 'cartapp:add' product.pk %}">
+                                    {% csrf_token %}
+                                    {{ cart_quantity.as_p }}
+                                    <button class="single_add_to_cart_button" type="submit">В корзину</button>
+                                </form>
+                            </div>
+                            <div class="quick-desc">
+                                {{ product.shortdescription }}
+                            </div>
+                        </div><!-- .product-info -->
+                    </div><!-- .modal-product -->
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div>
+    <!-- END Modal -->
+</div>
+<!-- END QUICKVIEW PRODUCT -->
+{% endfor %}
+{% endblock %}

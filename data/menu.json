@@ -1,0 +1,14 @@
+{
+	"links_menu": [
+{"href": "main", "name": "Главная"},
+{"href": "about", "name": "О нас"},
+{"href": "account", "name": "Новый аккаунт"},
+{"href": "cart", "name": "Корзина"},
+{"href": "checkout", "name": "Оплата и доставка"},
+{"href": "contact", "name": "Обратная связь"},
+{"href": "my_account", "name": "Мой аккаунт"},
+{"href": "product_details", "name": "Подробное описание"},
+{"href": "shop", "name": "Магазин сеткой"},
+{"href": "shop_list", "name": "Магазин списком"},
+{"href": "wishlist", "name": "Список желаний"}]
+}

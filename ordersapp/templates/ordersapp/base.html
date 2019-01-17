@@ -1,0 +1,24 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+{{ title|title }}
+{% endblock %}
+
+
+{% block page_content %}
+
+{% endblock %}
+
+
+{% block brand_area %}
+<br>
+{% endblock%}
+
+
+{% block jsscripts %}
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/orders_scripts.js' %}"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+{% endblock%}

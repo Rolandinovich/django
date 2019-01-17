@@ -1,0 +1,28 @@
+{% load static %}
+<!-- CATEGORY-MENU-LIST START -->
+<div class="left-category-menu hidden-sm hidden-xs">
+    <div class="left-product-cat">
+        <div class="category-heading">
+            <h2>Категории</h2>
+        </div>
+        <div class="category-menu-list">
+            <ul>
+                {% for m in menu %}
+                <li class="arrow-plus">
+                    <a>{{ m.title }}</a>
+                    <div class="cat-left-drop-menu">
+                        <div class="cat-left-drop-menu-left">
+                            <ul>
+                                {% for subm in m.submenu %}
+                                <li><a href="{% url 'mainapp:products' subm.pk %}">{{ subm.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                {%endfor%}
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END CATEGORY-MENU-LIST -->

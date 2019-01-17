@@ -1,0 +1,50 @@
+{% load static %}
+<div class="col-md-3 col-sm-3">
+    <!-- START HOT-DEALS-AREA -->
+    <div class="hot-deals-area carosel-circle">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="area-title">
+                    <h3 class="title-group border-red gfont-1">Горячие предложения</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="active-hot-deals">
+                {% for hot_dial in hot_dials %}
+                <!-- Start Single-hot-deals -->
+                <div class="col-xs-12">
+                    <div class="single-hot-deals">
+                        <div class="hot-deals-photo">
+                            <a href="{% url 'mainapp:product_details' hot_dial.product.pk %}">
+                                <img src="{{ hot_dial.product.image.url }}" alt="Product"></a>
+                        </div>
+                        <div class="count-down">
+                            <div class="timer">
+                                <div data-countdown="{{ hot_dial.date_end|date:" Y/m/d" }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hot-deals-text">
+                        <h5>
+                            <a href="{% url 'mainapp:product_details' hot_dial.product.pk %}" class="name-group">
+                                {{ hot_dial.product.title }}
+                            </a>
+                        </h5>
+                        <div class="price-box">
+                            <span class="price gfont-2">{{ hot_dial.product.cost }} &#x20BD;</span>
+                            <span class="old-price gfont-2">{{ hot_dial.product.oldcost }} &#x20BD;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Single-hot-deals -->
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- END HOT-DEALS-AREA -->
+<!-- START SMALL-PRODUCT-AREA -->
+
+<!-- END SMALL-PRODUCT-AREA -->
+</div>

@@ -1,0 +1,84 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+Избранное
+{% endblock %}
+
+{% block page_content %}
+<!-- START PAGE-CONTENT -->
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- CATEGORY-MENU-LIST START -->
+                {% include 'mainapp/master_pages/categories.html' %}
+                <!-- END CATEGORY-MENU-LIST -->
+            </div>
+            <div class="col-md-9">
+                <div class="Wishlist-area">
+                    <h2>Избранное</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <td class="text-center">Фото</td>
+                                <td class="text-left">Название</td>
+                                <td class="text-right">Цена</td>
+                                <td class="text-right" width="150px">Действия</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for wish_item in wish %}
+                            <tr>
+                                <td class="text-center">
+                                    <a href="{% url 'mainapp:product_details' wish_item.product.pk %}">
+                                        <img src="{{ wish_item.product.image.url }}"
+                                             alt="#"
+                                             class="img-thumbnail"
+                                        /></a>
+                                </td>
+                                <td class="text-left">
+                                    <a href="{% url 'mainapp:product_details' wish_item.product.pk %}">
+                                        {{ wish_item.product.title }}</a>
+                                </td>
+
+                                <td class="text-right">
+                                    <div class="price-box">
+                                        <span class="price">{{ wish_item.product.cost }}</span>
+                                        {% if wish_item.products.oldcost %}
+                                        <span class="old-price">{{ wish_item.product.oldcost }}</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="text-right" width="150px">
+                                    <button class="btn btn-primary"
+                                            data-toggle="tooltip"
+                                            title="Add to Cart"
+                                            type="button"
+                                            onclick="location.href='{% url 'cartapp:add' wish_item.product.pk %}'">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </button>
+                                    <a href="{% url 'wishapp:remove' wish_item.product.pk %}"
+                                       class="btn btn-danger"
+                                       data-toggle="tooltip"
+                                       title="Remove">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="buttons clearfix pull-right">
+                        <a href="#" class="btn btn-primary">Продолжить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END PAGE-CONTENT -->
+{% endblock %}

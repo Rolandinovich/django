@@ -1,0 +1,33 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+{{ title }}
+{% endblock %}
+
+{% block page_content %}
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <div>
+                    {% if user.avatar%}
+                    <div class="user_avatar" ><img src="{{ user.avatar.url }}" width="150px" height="150px"></div>
+                    {% endif %}
+                    <form class="form-horizontal" action="{% url 'accounts:edit' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ edit_form.as_p }}
+                        {{ profile_form.as_p }}
+                        <input class="btn btn-primary" type="submit" value="Сохранить">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}

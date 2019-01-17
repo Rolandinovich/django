@@ -1,0 +1,55 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+Корзина
+{% endblock %}
+
+{% block page_content %}
+<!-- START PAGE-CONTENT -->
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- CATEGORY-MENU-LIST START -->
+                {% include 'mainapp/master_pages/categories.html' %}
+                <!-- END CATEGORY-MENU-LIST -->
+                <!-- START SMALL-PRODUCT-AREA -->
+                >
+                <!-- END SMALL-PRODUCT-AREA -->
+            </div>
+            <div class="col-md-9">
+                <!-- Start Shopping-Cart -->
+                <div class="shopping-cart">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="cart-title">
+                                <h2 class="entry-title">Корзина</h2>
+                            </div>
+                            <!-- Start Table -->
+                            <div class="cart_list">
+                                {% include 'cartapp/cart_list.html' %}
+                                <!-- End Table -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Shopping-Cart -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END PAGE-CONTENT -->
+{% endblock %}
+
+
+{% block brand_area %}
+бренды тут
+{% endblock%}
+
+
+{% block jsscripts %}
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/cart_scripts.js' %}"></script>
+{% endblock%}

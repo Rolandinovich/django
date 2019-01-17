@@ -1,0 +1,126 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+Характеристики товара
+{% endblock %}
+
+{% block page_content %}
+<!-- START PAGE-CONTENT -->
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- CATEGORY-MENU-LIST START -->
+                {% include 'mainapp/master_pages/categories.html' %}
+                <!-- END CATEGORY-MENU-LIST -->
+
+
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <!-- Start Toch-Prond-Area -->
+                <div class="toch-prond-area">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <div class="clear"></div>
+                            <div class="tab-content">
+                                <!-- Product = display-1-1 -->
+                                <div role="tabpanel" class="tab-pane fade in active" id="display-1">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="toch-photo">
+                                                <a href="#"><img src="{{ product.image.url }}" data-imagezoom="true"
+                                                                 alt="#"/></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Product = display-1-1 -->
+                                <!-- Start Product = display-1-2 -->
+                                <div role="tabpanel" class="tab-pane fade" id="display-2">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="toch-photo">
+                                                <a href="#"><img src="{{ product.image2.url }}" data-imagezoom="true"
+                                                                 alt="#"/></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Product = display-1-2 -->
+                            </div>
+                            <!-- Start Toch-prond-Menu -->
+                            <div class="toch-prond-menu">
+                                <ul role="tablist">
+                                    <li role="presentation" class=" active"><a href="#display-1" role="tab"
+                                                                               data-toggle="tab"><img
+                                            src="{{ product.image.url }}" alt="#"/></a></li>
+                                    <li role="presentation"><a href="#display-2" role="tab" data-toggle="tab"><img
+                                            src="{{ product.image2.url }}" alt="#"/></a></li>
+                                </ul>
+                            </div>
+                            <!-- End Toch-prond-Menu -->
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-xs-12">
+                            <h2 class="title-product"> {{ product.title }}</h2>
+                            <div class="about-toch-prond">
+                                <hr/>
+                                <p class="short-description">{{ product.shortdescription }}</p>
+                                <hr/>
+                                <span class="current-price">{{ product.cost }}</span>
+                            </div>
+
+                            <div class="product-quantity">
+                                <button onclick="location.href='{% url 'cartapp:add' product.pk %}'"
+                                        type="submit"
+                                        class="toch-button toch-add-cart">
+                                    В корзину
+                                </button>
+                                <button onclick="location.href='{% url 'wishapp:add' product.pk %}'"
+                                        type="submit"
+                                        class="toch-button toch-wishlist">
+                                    В избранное
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start Toch-Box -->
+                    <div class="toch-box">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- Start Toch-Menu -->
+                                <div class="toch-menu">
+                                    <ul role="tablist">
+                                        <li role="presentation" class=" active"><a href="#description" role="tab"
+                                                                                   data-toggle="tab">Описание</a></li>
+                                    </ul>
+                                </div>
+                                <!-- End Toch-Menu -->
+                                <div class="tab-content toch-description-review">
+                                    <!-- Start display-description -->
+                                    <div role="tabpanel" class="tab-pane fade in active" id="description">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="toch-description">
+                                                    <p>{{ product.description }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End display-description -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Toch-Box -->
+
+                </div>
+                <!-- End Toch-Prond-Area -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END PAGE-CONTENT -->
+{% endblock %}

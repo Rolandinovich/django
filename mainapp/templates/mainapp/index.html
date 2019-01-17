@@ -1,0 +1,507 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+Главная страница
+{% endblock %}
+{% block page_content %}
+
+<!-- Category slider area start -->
+<div class="category-slider-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'mainapp/master_pages/categories.html' %}
+            </div>
+            <div class="col-md-9">
+                <!-- slider -->
+                <div class="slider-area">
+                    <div class="bend niceties preview-1">
+                        <div id="ensign-nivoslider" class="slides">
+                            {% for slide in three_slide_news %}
+                            <img src="{{ slide.image.url }}" alt="Malias" title="#slider-direction-{{ slide.pk }}"/>
+                            {% endfor %}
+                        </div>
+                        {% for slide in three_slide_news %}
+                        <!-- direction -->
+                        <div id="slider-direction-{{ slide.pk }}" class="t-lfr slider-direction">
+                            <div class="slider-progress"></div>
+                            <!-- layer 1 -->
+                            <div class="layer-1-1 ">
+                                <h1 class="title1">{{ slide.title1 }}</h1>
+                            </div>
+                            <!-- layer 2 -->
+                            <div class="layer-1-2">
+                                <p class="title2">{{ slide.title2 }}</p>
+                            </div>
+                            <!-- layer 3 -->
+                            <div class="layer-1-3">
+                                <h2 class="title3">{{ slide.product.cost }} &#x20BD;</h2>
+                            </div>
+                            <!-- layer 4 -->
+                            <div class="layer-1-4">
+                                <a href="{% url 'mainapp:product_details' slide.product.pk %}" class="title4">Купить
+                                    сейчас</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- slider end-->
+        </div>
+    </div>
+</div>
+</div>
+<!-- Category slider area End -->
+<!-- START PAGE-CONTENT -->
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            {% include 'mainapp/master_pages/hotdeals.html' %}
+            <div class="col-md-9 col-sm-9">
+                <!-- START PRODUCT-AREA (1) -->
+                <div class="product-area">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <!-- Start Product-Menu -->
+                            <div class="product-menu">
+                                <div class="product-title">
+                                    <h3 class="title-group-2 gfont-1">
+                                        <a href="{% url 'mainapp:products' 'new' %}">
+                                            Новые продукты</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product-Menu -->
+                    <div class="clear"></div>
+                    <!-- Start Product -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="product carosel-navigation">
+                                <div class="tab-content">
+                                    <!-- Product = display-1-1 -->
+                                    <div role="tabpanel" class="tab-pane fade in active" id="display-1-1">
+                                        <div class="row">
+                                            <div class="active-product-carosel">
+                                                <!-- Start Single-Product -->
+                                                {% for new in new_products %}
+                                                <div class="col-xs-12">
+                                                    <div class="single-product">
+                                                        {% if new.product.new %}
+                                                        <div class="label_new">
+                                                            <span class="new">НовьЁ</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if new.product.oldcost %}
+                                                        <div class="sale-off">
+                                                            <span class="sale-percent">Скидка!</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="product-img">
+                                                            <a href="{% url 'mainapp:product_details' new.product.pk %}">
+                                                                <img class="primary-img"
+                                                                     src="{{ new.product.image.url }}"
+                                                                     alt="Product">
+                                                                <img class="secondary-img"
+                                                                     src="{{ new.product.image2.url }}"
+                                                                     alt="Product">
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-description">
+                                                            <h5><a href="#">{{ new.product.title }}</a></h5>
+                                                            <div class="price-box">
+                                                                <span class="price">{{ new.product.cost }}</span>
+                                                                {% if new.product.oldcost %}
+                                                                <span class="old-price">{{ new.product.oldcost }}</span>
+                                                                {% endif %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="product-action">
+                                                            <div class="button-group">
+                                                                <div class="product-button">
+                                                                    <button onclick="location.href='{% url 'cartapp:add' new.product.pk %}'">
+                                                                        <i class="fa fa-shopping-cart"></i> В корзину
+                                                                    </button>
+                                                                </div>
+                                                                <div class="product-button-2">
+                                                                    <a href="{% url 'wishapp:add' new.product.pk %}"
+                                                                       data-toggle="tooltip"
+                                                                       title="В избранное"><i class="fa fa-heart-o"></i></a>
+                                                                    <a href="#" class="modal-view" data-toggle="modal"
+                                                                       data-target="#productModal{{ new.product.pk }}"><i
+                                                                            class="fa fa-search-plus"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Single-Product -->
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Product = display-1-1 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product -->
+                </div>
+                <!-- END PRODUCT-AREA (1) -->
+                <!-- START PRODUCT-AREA (2) -->
+                <div class="product-area">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <!-- Start Product-Menu -->
+                            <div class="product-menu">
+                                <div class="product-title">
+                                    <h3 class="title-group-2 gfont-1">
+                                        <a href="{% url 'mainapp:products' 'sale' %}">
+                                            Скидки</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product-Menu -->
+                    <div class="clear"></div>
+                    <!-- Start Product -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="product carosel-navigation">
+                                <div class="tab-content">
+                                    <!-- Product = display-1-1 -->
+                                    <div role="tabpanel" class="tab-pane fade in active" id="display-1-1">
+                                        <div class="row">
+                                            <div class="active-product-carosel">
+                                                <!-- Start Single-Product -->
+                                                {% for sale in sale_products %}
+                                                <div class="col-xs-12">
+                                                    <div class="single-product">
+                                                        {% if sale.product.new %}
+                                                        <div class="label_new">
+                                                            <span class="new">НовьЁ</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if sale.product.oldcost %}
+                                                        <div class="sale-off">
+                                                            <span class="sale-percent">Скидка!</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="product-img">
+                                                            <a href="{% url 'mainapp:product_details' sale.product.pk %}">
+                                                                <img class="primary-img"
+                                                                     src="{{ sale.product.image.url }}"
+                                                                     alt="Product">
+                                                                <img class="secondary-img"
+                                                                     src="{{ sale.product.image2.url }}"
+                                                                     alt="Product">
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-description">
+                                                            <h5><a href="#">{{ sale.product.title }}</a></h5>
+                                                            <div class="price-box">
+                                                                <span class="price">{{ sale.product.cost }}</span>
+                                                                {% if sale.product.oldcost %}
+                                                                <span class="old-price">{{ sale.product.oldcost }}</span>
+                                                                {% endif %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="product-action">
+                                                            <div class="button-group">
+                                                                <div class="product-button">
+                                                                    <button onclick="location.href='{% url 'cartapp:add' sale.product.pk %}'">
+                                                                        <i class="fa fa-shopping-cart"></i> В корзину
+                                                                    </button>
+                                                                </div>
+                                                                <div class="product-button-2">
+                                                                    <a href="{% url 'wishapp:add' sale.product.pk %}"
+                                                                       data-toggle="tooltip"
+                                                                       title="В избранное"><i class="fa fa-heart-o"></i></a>
+                                                                    <a href="#" class="modal-view" data-toggle="modal"
+                                                                       data-target="#productModal{{ sale.product.pk }}"><i
+                                                                            class="fa fa-search-plus"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Single-Product -->
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Product = display-1-1 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product -->
+                </div>
+                <!-- END PRODUCT-AREA (2) -->
+                <!-- START PRODUCT-AREA (3) -->
+                <div class="product-area">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <!-- Start Product-Menu -->
+                            <div class="product-menu">
+                                <div class="product-title">
+                                    <h3 class="title-group-2 gfont-1">Лидеры продаж</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product-Menu -->
+                    <div class="clear"></div>
+                    <!-- Start Product -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="product carosel-navigation">
+                                <div class="tab-content">
+                                    <!-- Product = display-1-1 -->
+                                    <div role="tabpanel" class="tab-pane fade in active" id="display-1-1">
+                                        <div class="row">
+                                            <div class="active-product-carosel">
+                                                <!-- Start Single-Product -->
+                                                {% for best_selling in best_selling_products %}
+                                                <div class="col-xs-12">
+                                                    <div class="single-product">
+                                                        {% if best_selling.product.new %}
+                                                        <div class="label_new">
+                                                            <span class="new">НовьЁ</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if best_selling.product.oldcost %}
+                                                        <div class="sale-off">
+                                                            <span class="sale-percent">Скидка!</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="product-img">
+                                                            <a href="{% url 'mainapp:product_details' best_selling.product.pk %}">
+                                                                <img class="primary-img"
+                                                                     src="{{ best_selling.product.image.url }}"
+                                                                     alt="Product">
+                                                                <img class="secondary-img"
+                                                                     src="{{ best_selling.product.image2.url }}"
+                                                                     alt="Product">
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-description">
+                                                            <h5><a href="#">{{ best_selling.product.title }}</a></h5>
+                                                            <div class="price-box">
+                                                                <span class="price">{{ best_selling.product.cost }}</span>
+                                                                {% if best_selling.product.oldcost %}
+                                                                <span class="old-price">{{ best_selling.product.oldcost }}</span>
+                                                                {% endif %}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="product-action">
+                                                            <div class="button-group">
+                                                                <div class="product-button">
+                                                                    <button onclick="location.href='{% url 'cartapp:add' best_selling.product.pk %}'">
+                                                                        <i class="fa fa-shopping-cart"></i> В корзину
+                                                                    </button>
+                                                                </div>
+                                                                <div class="product-button-2">
+                                                                    <a href="{% url 'wishapp:add' best_selling.product.pk %}"
+                                                                       data-toggle="tooltip"
+                                                                       title="В избранное"><i class="fa fa-heart-o"></i></a>
+                                                                    <a href="#" class="modal-view" data-toggle="modal"
+                                                                       data-target="#productModal{{ best_selling.product.pk }}"><i
+                                                                            class="fa fa-search-plus"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Single-Product -->
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Product = display-1-1 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product -->
+                </div>
+                <!-- END PRODUCT-AREA (3) -->
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END HOME-PAGE-CONTENT -->
+<!-- FOOTER-AREA START -->
+{% endblock%}
+
+
+{% block product_modal %}
+
+{% for new in new_products %}
+<!-- QUICKVIEW PRODUCT -->
+<div id="quickview-wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ new.product.pk }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-product">
+                        <div class="product-images">
+                            <div class="main-image images">
+                                <img alt="#" src="{{ new.product.image.url }}"/>
+                            </div>
+                        </div><!-- .product-images -->
+
+                        <div class="product-info">
+                            <h1>{{ new.product.title }}</h1>
+                            <div class="price-box-3">
+                                <hr/>
+                                <div class="s-price-box">
+                                    <span class="new-price">{{ new.product.cost }}</span>
+                                    {% if product.oldcost %}
+                                    <span class="old-price">{{ new.product.oldcost }}</span>
+                                    {% endif %}
+                                </div>
+                                <hr/>
+                            </div>
+                            <a href="{% url 'mainapp:product_details' new.product.pk %}" class="see-all">Подробнее</a>
+                            <div class="quick-add-to-cart">
+                                <form method="POST" class="cart" action="{% url 'cartapp:add' new.product.pk %}">
+                                    {% csrf_token %}
+                                    {{ cart_quantity.as_p }}
+                                    <button class="single_add_to_cart_button" type="submit">В корзину</button>
+                                </form>
+                            </div>
+                            <div class="quick-desc">
+                                {{ new.product.shortdescription }}
+                            </div>
+                        </div><!-- .product-info -->
+                    </div><!-- .modal-product -->
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div>
+    <!-- END Modal -->
+</div>
+<!-- END QUICKVIEW PRODUCT -->
+{% endfor %}
+
+{% for sale in sale_products %}
+<!-- QUICKVIEW PRODUCT -->
+<div id="quickview-wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ sale.product.pk }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-product">
+                        <div class="product-images">
+                            <div class="main-image images">
+                                <img alt="#" src="{{ sale.product.image.url }}"/>
+                            </div>
+                        </div><!-- .product-images -->
+
+                        <div class="product-info">
+                            <h1>{{ sale.product.title }}</h1>
+                            <div class="price-box-3">
+                                <hr/>
+                                <div class="s-price-box">
+                                    <span class="new-price">{{ sale.product.cost }}</span>
+                                    {% if product.oldcost %}
+                                    <span class="old-price">{{ sale.product.oldcost }}</span>
+                                    {% endif %}
+                                </div>
+                                <hr/>
+                            </div>
+                            <a href="{% url 'mainapp:product_details' sale.product.pk %}" class="see-all">Подробнее</a>
+                            <div class="quick-add-to-cart">
+                                <form method="POST" class="cart" action="{% url 'cartapp:add' sale.product.pk %}">
+                                    {% csrf_token %}
+                                    {{ cart_quantity.as_p }}
+                                    <button class="single_add_to_cart_button" type="submit">В корзину</button>
+                                </form>
+                            </div>
+                            <div class="quick-desc">
+                                {{ sale.product.shortdescription }}
+                            </div>
+                        </div><!-- .product-info -->
+                    </div><!-- .modal-product -->
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div>
+    <!-- END Modal -->
+</div>
+<!-- END QUICKVIEW PRODUCT -->
+{% endfor %}
+
+{% for best_selling in best_selling_products %}
+<!-- QUICKVIEW PRODUCT -->
+<div id="quickview-wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="productModal{{ best_selling.product.pk }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-product">
+                        <div class="product-images">
+                            <div class="main-image images">
+                                <img alt="#" src="{{ best_selling.product.image.url }}"/>
+                            </div>
+                        </div><!-- .product-images -->
+
+                        <div class="product-info">
+                            <h1>{{ best_selling.product.title }}</h1>
+                            <div class="price-box-3">
+                                <hr/>
+                                <div class="s-price-box">
+                                    <span class="new-price">{{ best_selling.product.cost }}</span>
+                                    {% if product.oldcost %}
+                                    <span class="old-price">{{ best_selling.product.oldcost }}</span>
+                                    {% endif %}
+                                </div>
+                                <hr/>
+                            </div>
+                            <a href="{% url 'mainapp:product_details' best_selling.product.pk %}" class="see-all">Подробнее</a>
+                            <div class="quick-add-to-cart">
+                                <form method="POST" class="cart"
+                                      action="{% url 'cartapp:add' best_selling.product.pk %}">
+                                    {% csrf_token %}
+                                    {{ cart_quantity.as_p }}
+                                    <button class="single_add_to_cart_button" type="submit">В корзину</button>
+                                </form>
+                            </div>
+                            <div class="quick-desc">
+                                {{ best_selling.product.shortdescription }}
+                            </div>
+                        </div><!-- .product-info -->
+                    </div><!-- .modal-product -->
+                </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+        </div><!-- .modal-dialog -->
+    </div>
+    <!-- END Modal -->
+</div>
+<!-- END QUICKVIEW PRODUCT -->
+{% endfor %}
+{% endblock %}

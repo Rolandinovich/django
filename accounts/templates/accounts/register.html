@@ -1,0 +1,30 @@
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+{{ title }}
+{% endblock %}
+
+{% block page_content %}
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <div>
+                    <form class="form-horizontal" action="{% url 'accounts:register' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ register_form.as_p }}
+                        <br>
+                        <input class="btn btn-primary" type="submit" value="зарегистрироваться">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}
