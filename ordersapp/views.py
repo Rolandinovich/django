@@ -15,6 +15,9 @@ from ordersapp.forms import OrderItemForm
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, pre_delete
 
+from django.http import JsonResponse
+from mainapp.models import Product
+
 
 class OrderList(ListView):
     model = Order
@@ -139,3 +142,13 @@ def order_forming_complete(request, pk):
     order.save()
 
     return HttpResponseRedirect(reverse('ordersapp:orders_list'))
+
+
+def get_product_price(request, pk):
+    if request.is_ajax():
+        print('зашёл pk=', pk)
+        product = Product.objects.filter(pk=int(pk)).first()
+        if product:
+            return JsonResponse({'price': product.cost})
+        else:
+            return JsonResponse({'price': 0})
