@@ -18,8 +18,6 @@ from django.db.models.signals import pre_save, pre_delete
 from django.http import JsonResponse
 from mainapp.models import Product
 
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 

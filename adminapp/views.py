@@ -17,24 +17,15 @@ class UsersListView(ListView):
     model = Account
     template_name = 'adminapp/users.html'
 
+    def get_context_data(self, **kwargs):
+        data = super(UsersListView, self).get_context_data(**kwargs)
+        data['title'] = 'пользователи'
+        return data
+
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
         return super(UsersListView, self).dispatch(*args, **kwargs)
 
-
-# @user_passes_test(lambda u: u.is_superuser)
-# def users(request):
-#     title = 'админка/пользователи'
-#
-#     users_list = Account.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
-#
-#     content = {
-#         'title': title,
-#         'objects': users_list
-#     }
-#
-#     return render(request, 'adminapp/users.html', content)
-#
 
 class CategoryCreateView(CreateView):
     model = Category
@@ -74,55 +65,61 @@ class ProductDetailView(DetailView):
     template_name = 'adminapp/product_read.html'
 
 
-def user_create(request):
-    title = 'пользователи/создание'
+class UserCreateView(CreateView):
+    model = Account
+    template_name = 'adminapp/user_update.html'
+    form_class = AccountRegisterForm
+    success_url = reverse_lazy('adminapp:users')
 
-    if request.method == 'POST':
-        user_form = AccountRegisterForm(request.POST, request.FILES)
-        if user_form.is_valid():
-            user_form.save()
-            return HttpResponseRedirect(reverse('adminapp:users'))
-    else:
-        user_form = AccountRegisterForm()
-
-    content = {'title': title, 'update_form': user_form}
-
-    return render(request, 'adminapp/user_update.html', content)
+    def get_context_data(self, **kwargs):
+        data = super(UserCreateView, self).get_context_data(**kwargs)
+        data['title'] = 'пользователи/создание'
+        return data
 
 
-def user_update(request, pk):
-    title = 'пользователи/редактирование'
+class UserUpdateView(UpdateView):
+    model = Account
+    template_name = 'adminapp/user_update.html'
+    form_class = AccountAdminEditForm
+    success_url = reverse_lazy('adminapp:users')
 
-    edit_user = get_object_or_404(Account, pk=pk)
-    if request.method == 'POST':
-        edit_form = AccountAdminEditForm(request.POST, request.FILES, instance=edit_user)
-        if edit_form.is_valid():
-            edit_form.save()
-            return HttpResponseRedirect(reverse('adminapp:user_update', args=[edit_user.pk]))
-    else:
-        edit_form = AccountAdminEditForm(instance=edit_user)
-
-    content = {'title': title, 'update_form': edit_form}
-
-    return render(request, 'adminapp/user_update.html', content)
+    def get_context_data(self, **kwargs):
+        data = super(UserUpdateView, self).get_context_data(**kwargs)
+        data['title'] = 'пользователи/редактирование'
+        return data
 
 
-def user_delete(request, pk):
-    title = 'пользователи/удаление'
+class UserDeleteView(DeleteView):
+    model = Account
+    template_name = 'adminapp/user_delete.html'
+    success_url = reverse_lazy('adminapp:users')
 
-    user = get_object_or_404(Account, pk=pk)
+    def get_context_data(self, **kwargs):
+        data = super(UserDeleteView, self).get_context_data(**kwargs)
+        data['title'] = 'пользователи/удаление'
+        return data
 
-    if request.method == 'POST':
-        # user.delete()
-        # вместо удаления лучше сделаем неактивным
-        user.is_active = False
-        user.save()
-        return HttpResponseRedirect(reverse('adminapp:users'))
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
 
-    content = {'title': title, 'user_to_delete': user}
+        return HttpResponseRedirect(self.get_success_url())
 
-    return render(request, 'adminapp/user_delete.html', content)
 
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'adminapp/categories.html'
+
+
+    def get_context_data(self, **kwargs):
+        data = super(CategoryListView, self).get_context_data(**kwargs)
+        data['title'] = 'категории'
+        return data
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super(CategoryListView, self).dispatch(*args, **kwargs)
 
 def categories(request):
     title = 'админка/категории'
