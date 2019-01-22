@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
-from wishapp.models import Wish, add, remove
+from wishapp.models import Wish
 from cartapp.models import Cart
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -22,24 +22,25 @@ class WishListView(LoginRequiredMixin, ListView):
         return Wish.objects.filter(user=self.request.user)
 
 
-# @login_required
-# def wish(request):
-#     context = {'menu': get_menu(),
-#                'wish': Wish.objects.filter(user=request.user),
-#                'cart': Cart.objects.filter(user=request.user),
-#                }
-#     return render(request, 'wishapp/wish_list.html', context)
-
-
 def wish_add(request, pk):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('accounts:login'))
-    add(request, pk)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(
+            ''.join([reverse('accounts:login'),
+                     '?next=', request.META.get('HTTP_REFERER'),
+                     '&action=', request.get_full_path()])
+        )
+
+    Wish.add(request, pk)
+
+    link_next_page = request.GET['next'] if 'next' in request.GET.keys() else ''
+    if link_next_page:
+        return HttpResponseRedirect(link_next_page)
+    else:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def wish_remove(request, pk):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('accounts:login'))
-    remove(request, pk)
+    Wish.remove(request, pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

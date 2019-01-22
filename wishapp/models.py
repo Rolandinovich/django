@@ -4,20 +4,6 @@ from mainapp.models import Product
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 
 
-def add(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    wish_item = Wish.objects.filter(user=request.user, product=product)
-    if not wish_item:
-        wish_item = Wish(user=request.user, product=product)
-        wish_item.save()
-
-
-def remove(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    wish_item = Wish.objects.get(user=request.user, product=product)
-    wish_item.delete()
-
-
 class Wish(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -40,3 +26,15 @@ class Wish(models.Model):
 
     def __str__(self):
         return ' '.join((self.user.username, self.product.title))
+
+    def add(request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        wish_item = Wish.objects.filter(user=request.user, product=product)
+        if not wish_item:
+            wish_item = Wish(user=request.user, product=product)
+            wish_item.save()
+
+    def remove(request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        wish_item = Wish.objects.get(user=request.user, product=product)
+        wish_item.delete()
