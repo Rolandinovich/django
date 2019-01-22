@@ -5,29 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.core.validators import MinValueValidator
 
 
-# Добавление товара в корзину
 
-def add_to_card(request, pk, ADD_QUANTITY):
-    product = get_object_or_404(Product, pk=pk)
-    old_cart_item = Cart.objects.filter(user=request.user, product=product)
-    if old_cart_item:
-        old_cart_item[0].quantity += ADD_QUANTITY
-        old_cart_item[0].save()
-    else:
-        new_cart_item = Cart(user=request.user, product=product)
-        new_cart_item.quantity = ADD_QUANTITY
-        new_cart_item.save()
-
-
-# Удаление товара из корзины
-def remove_from_card(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    cart_item = Cart.objects.get(user=request.user, product=product)
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
 
 
 class CartQuerySet(models.QuerySet):
@@ -90,6 +68,29 @@ class Cart(models.Model):
             self.product.quantity -= self.quantity
         self.product.save()
         super(self.__class__, self).save(*args, **kwargs)
+
+    # Добавление товара в корзину
+
+    def add_to_card(request, pk, ADD_QUANTITY):
+        product = get_object_or_404(Product, pk=pk)
+        old_cart_item = Cart.objects.filter(user=request.user, product=product)
+        if old_cart_item:
+            old_cart_item[0].quantity += ADD_QUANTITY
+            old_cart_item[0].save()
+        else:
+            new_cart_item = Cart(user=request.user, product=product)
+            new_cart_item.quantity = ADD_QUANTITY
+            new_cart_item.save()
+
+    # Удаление товара из корзины
+    def remove_from_card(request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        cart_item = Cart.objects.get(user=request.user, product=product)
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
 
 
 

@@ -30,7 +30,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for wish_item in wish %}
+                            {% for wish_item in object_list %}
                             <tr>
                                 <td class="text-center">
                                     <a href="{% url 'mainapp:product_details' wish_item.product.pk %}">

@@ -18,15 +18,19 @@ from django.db.models.signals import pre_save, pre_delete
 from django.http import JsonResponse
 from mainapp.models import Product
 
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class OrderList(ListView):
+
+class OrderList(LoginRequiredMixin, ListView):
     model = Order
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
 
-class OrderItemsCreate(CreateView):
+class OrderItemsCreate(LoginRequiredMixin, CreateView):
     model = Order
     fields = []
     success_url = reverse_lazy('ordersapp:orders_list')
@@ -73,7 +77,7 @@ class OrderItemsCreate(CreateView):
         return super(OrderItemsCreate, self).form_valid(form)
 
 
-class OrderItemsUpdate(UpdateView):
+class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
     model = Order
     fields = []
     success_url = reverse_lazy('ordersapp:orders_list')
@@ -122,12 +126,12 @@ def product_quantity_update_save(sender, update_fields, instance, **kwargs):
         instance.product.save()
 
 
-class OrderDelete(DeleteView):
+class OrderDelete(LoginRequiredMixin, DeleteView):
     model = Order
     success_url = reverse_lazy('ordersapp:orders_list')
 
 
-class OrderRead(DetailView):
+class OrderRead(LoginRequiredMixin, DetailView):
     model = Order
 
     def get_context_data(self, **kwargs):

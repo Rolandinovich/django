@@ -13,19 +13,17 @@ def login(request):
     login_form = AccountLoginForm(data=request.POST or None)
     next = request.GET['next'] if 'next' in request.GET.keys() else ''
     action = request.GET['action'] if 'action' in request.GET.keys() else ''
-    quantity = request.GET['quantity'] if 'quantity' in request.GET.keys() else ''
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
         next = request.POST['next'] if 'next' in request.POST.keys() else ''
         action = request.POST['action'] if 'action' in request.POST.keys() else ''
-        quantity = request.POST['quantity'] if 'quantity' in request.POST.keys() else ''
         if user and user.is_active:
             auth.login(request, user)
             if 'next' in request.POST.keys():
                 if action:
-                    return HttpResponseRedirect(action + '?next=' + next + '&quantity=' + quantity)
+                    return HttpResponseRedirect(action + '?next=' + next)
                 else:
                     return HttpResponseRedirect(next)
             else:
@@ -35,7 +33,7 @@ def login(request):
                'login_form': login_form,
                'next': next,
                'action': action,
-               'quantity': quantity}
+               }
     return render(request, 'accounts/login.html', content)
 
 

@@ -22,19 +22,19 @@ class UsersListView(ListView):
         return super(UsersListView, self).dispatch(*args, **kwargs)
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def users(request):
-    title = 'админка/пользователи'
-
-    users_list = Account.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
-
-    content = {
-        'title': title,
-        'objects': users_list
-    }
-
-    return render(request, 'adminapp/users.html', content)
-
+# @user_passes_test(lambda u: u.is_superuser)
+# def users(request):
+#     title = 'админка/пользователи'
+#
+#     users_list = Account.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
+#
+#     content = {
+#         'title': title,
+#         'objects': users_list
+#     }
+#
+#     return render(request, 'adminapp/users.html', content)
+#
 
 class CategoryCreateView(CreateView):
     model = Category

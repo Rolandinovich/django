@@ -1,74 +1,55 @@
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <td class="text-center">Фото</td>
-            <td class="text-left">Название</td>
-            <td class="text-left">Количество</td>
-            <td class="text-right">Цена за штуку</td>
-            <td class="text-right">Всего</td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for cart_item in cart %}
-        <tr>
-            <td class="text-center">
-                <a href="{% url 'mainapp:product_details' cart_item.product.pk %}">
-                    <img class="img-thumbnail" src="{{ cart_item.product.image.url }}"
-                         alt="#"/>
-                </a>
-            </td>
-            <td class="text-left">
-                <a href="{% url 'mainapp:product_details' cart_item.product.pk %}">
-                    {{ cart_item.product.title }}
-                </a>
-            </td>
-            <td class="text-left">
-                <div class="btn-block cart-put">
-                    <h1>{{ cart_item.quantity }}</h1>
-                    <div class="input-group-btn cart-buttons">
-                        <button class="btn btn-primary"
-                                data-toggle="tooltip"
-                                title="Добавить 1 шт."
-                                onclick="location.href='{% url 'cartapp:add' cart_item.product.pk %}'">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <button class="btn btn-danger"
-                                data-toggle="tooltip"
-                                title="Удалить 1 шт."
-                                onclick="location.href='{% url 'cartapp:remove' cart_item.product.pk %}'">
-                            <i class="fa fa-minus"></i>
-                        </button>
+{% extends 'mainapp/master_pages/master.html' %}
+
+{% load static %}
+
+{% block page_title %}
+Корзина
+{% endblock %}
+
+{% block page_content %}
+<!-- START PAGE-CONTENT -->
+<section class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- CATEGORY-MENU-LIST START -->
+                {% include 'mainapp/master_pages/categories.html' %}
+                <!-- END CATEGORY-MENU-LIST -->
+                <!-- START SMALL-PRODUCT-AREA -->
+                >
+                <!-- END SMALL-PRODUCT-AREA -->
+            </div>
+            <div class="col-md-9">
+                <!-- Start Shopping-Cart -->
+                <div class="shopping-cart">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="cart-title">
+                                <h2 class="entry-title">Корзина</h2>
+                            </div>
+                            <!-- Start Table -->
+                            <div class="cart_list">
+                                {% include 'cartapp/cart_items.html' %}
+                                <!-- End Table -->
+                            </div>
+                        </div>
                     </div>
-                    <p>реализизация через AJAX</p>
-                    <input type="number"
-                           class="single_add_to_cart_button"
-                           name="{{ cart_item.pk }}"
-                           min="0"
-                           value="{{ cart_item.quantity }}">
                 </div>
-            </td>
-            <td class="text-right">{{ cart_item.product.cost }} &#x20BD;</td>
-            <td class="text-right">{{ cart_item.product_cost }} &#x20BD;</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<!-- End Table -->
-
-<div class="row">
-    <div class="col-sm-4 col-sm-offset-8">
-        <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <td class="text-right">
-                    <strong>Всего {{ cart.0.total_quantity }} шт.</strong>
-                </td>
-                <td class="text-right">{{ cart.0.total_cost }} &#x20BD;</td>
-            </tr>
-            </tbody>
-        </table>
+                <!-- End Shopping-Cart -->
+            </div>
+        </div>
     </div>
-</div>
+</section>
+<!-- END PAGE-CONTENT -->
+{% endblock %}
+
+
+{% block brand_area %}
+бренды тут
+{% endblock%}
+
+
+{% block jsscripts %}
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/cart_scripts.js' %}"></script>
+{% endblock%}
