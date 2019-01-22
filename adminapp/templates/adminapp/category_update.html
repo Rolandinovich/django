@@ -1,7 +1,9 @@
 
 {% extends 'adminapp/base.html' %}
 {% load static %}
-
+{% block page_title %}
+{{ title }}
+{% endblock %}
 {% block content %}
   <form class="form-horizontal" method="post" enctype="multipart/form-data">
     {% csrf_token %}

@@ -7,7 +7,7 @@
 
 {% block content %}
   <div class="user_delete">
-    Уверены, что хотите удалить {{ user_to_delete.username }}
+    Уверены, что хотите удалить {{ object.username }}
     {% if object.first_name %}
       ({{ object.first_name|title }}</b>
       {% if object.last_name %}

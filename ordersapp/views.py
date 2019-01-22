@@ -101,9 +101,7 @@ class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
 
         with transaction.atomic():
             self.object = form.save()
-            print('проверка1')
             if orderitems.is_valid():
-                print('проверка')
                 orderitems.instance = self.object
                 orderitems.save()
 
