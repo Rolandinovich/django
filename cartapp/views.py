@@ -1,10 +1,8 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect
 from cartapp.models import Cart
 from wishapp.models import Wish
 from cartapp.forms import CartQuantityForm
-from mainapp.models import get_menu
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.views.generic.list import ListView

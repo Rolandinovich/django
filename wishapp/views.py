@@ -1,8 +1,7 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import HttpResponseRedirect
 from wishapp.models import Wish
 from cartapp.models import Cart
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
