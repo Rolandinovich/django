@@ -1,0 +1,26 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="orders_list">
+
+    {% for object in object_list %}
+    <hr>
+    <div class="order_record">
+        {% if not object.is_active %}
+        <strike> не активна </strike>
+        {% endif %}
+        <div class="order_name">
+            Номер заказа: {{ object.pk }}<br>
+            Статус заказа: {{ object.status }}
+        </div>
+        <div class="order_actions">
+            <button>
+                <a href="{% url 'adminapp:order_update' object.pk %}">
+                    редактировать
+                </a>
+            </button>
+        </div>
+    </div>
+    {% endfor%}
+</div>
+{% endblock %}
