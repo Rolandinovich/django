@@ -1,18 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from mainapp.models import Category, Product, Hotdial, Three_slide_news, Special_offers
-from cartapp.models import Cart
 from cartapp.forms import CartQuantityForm
-from wishapp.models import Wish
 
 
 # Create your views here.
-
-def add_page_objects_if_user_is_authenticated(request, context):
-    if request.user.is_authenticated:
-        context.update({'cart': Cart.objects.filter(user=request.user),
-                        'wish': Wish.objects.filter(user=request.user),
-                        })
 
 
 def main_view(request):
@@ -22,26 +14,20 @@ def main_view(request):
                'hot_dials': Hotdial.objects.all(),
                'three_slide_news': Three_slide_news.objects.all()
                }
-    add_page_objects_if_user_is_authenticated(request, context)
     return render(request, 'mainapp/index.html', context)
 
 
 def about_view(request):
-    context = {}
-    add_page_objects_if_user_is_authenticated(request, context)
-    return render(request, 'mainapp/about.html', context)
+    return render(request, 'mainapp/about.html')
 
 
 def contact_view(request):
-    context = {}
-    add_page_objects_if_user_is_authenticated(request, context)
-    return render(request, 'mainapp/contact.html', context)
+    return render(request, 'mainapp/contact.html')
 
 
 def product_details_view(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {'product': product}
-    add_page_objects_if_user_is_authenticated(request, context)
     return render(request, 'mainapp/product-details.html', context)
 
 
@@ -68,7 +54,6 @@ def products_view(request, pk=0, special=''):
                'cart_quantity': cart_quantity,
                'category_title': category_title,
                }
-    add_page_objects_if_user_is_authenticated(request, context)
     return render(request, 'mainapp/products.html', context)
 
 
@@ -91,5 +76,4 @@ def products_search(request):
                'option': option,
                'search_str': search_str,
                }
-    add_page_objects_if_user_is_authenticated(request, context)
     return render(request, 'mainapp/search.html', context)
