@@ -4,9 +4,9 @@ from django.db import models
 # Формирование меню слева
 def get_menu():
     main_menu = []
-    for m in Menu.objects.all():
+    for m in Menu.objects.all().select_related():
         submenu = []
-        for sm in Menu_element.objects.filter(menu__title=m.title):
+        for sm in Menu_element.objects.filter(menu__title=m.title).select_related():
             submenu.append({'title': sm.category.title, 'pk': sm.pk})
         main_menu.append({'title': m.title, 'submenu': submenu})
     return main_menu
@@ -38,7 +38,7 @@ class Category(models.Model):
         auto_now_add=True
     )
 
-    is_active = models.BooleanField(verbose_name='активна', default=True)
+    is_active = models.BooleanField(db_index=True, verbose_name='активна', default=True)
 
     def __str__(self):
         return self.title
@@ -112,7 +112,7 @@ class Product(models.Model):
         auto_now_add=True
     )
 
-    is_active = models.BooleanField(verbose_name='активнен', default=True)
+    is_active = models.BooleanField(db_index=True, verbose_name='активнен', default=True)
 
     def __str__(self):
         return self.title

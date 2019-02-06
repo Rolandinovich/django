@@ -23,7 +23,7 @@ SECRET_KEY = 'x(o5ltw&fjh)-z(*dp#5ogpxphb35b!2!+#nmjg7-g2((0cl&f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = False
+#DEBUG = False
 
 # ALLOWED_HOSTS = []
 #ALLOWED_HOSTS = ['127.0.0.1']
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -65,7 +65,7 @@ MIDDLEWARE = [
 
 if DEBUG:
     def show_toolbar(request):
-        return True
+        return DEBUG
 
 
     DEBUG_TOOLBAR_CONFIG = {
@@ -116,17 +116,17 @@ WSGI_APPLICATION = 'itshop.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
     'default': {
-        'NAME': 'itshop',
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'django',
-        'PASSWORD': 'geekbrains',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    # 'default': {
+    #     'NAME': 'itshop',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'USER': 'django',
+    #     'PASSWORD': 'geekbrains',
+    #     'HOST': 'localhost'
+    # }
 }
 
 # Password validation

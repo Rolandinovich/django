@@ -8,10 +8,10 @@ from cartapp.forms import CartQuantityForm
 
 
 def main_view(request):
-    context = {'new_products': Special_offers.objects.filter(new=True),
-               'sale_products': Special_offers.objects.filter(sale=True),
-               'best_selling_products': Special_offers.objects.filter(best_selling=True),
-               'hot_dials': Hotdial.objects.all(),
+    context = {'new_products': Special_offers.objects.filter(new=True).select_related(),
+               'sale_products': Special_offers.objects.filter(sale=True).select_related(),
+               'best_selling_products': Special_offers.objects.filter(best_selling=True).select_related(),
+               'hot_dials': Hotdial.objects.all().select_related(),
                'three_slide_news': Three_slide_news.objects.all().select_related(),
                }
     return render(request, 'mainapp/index.html', context)

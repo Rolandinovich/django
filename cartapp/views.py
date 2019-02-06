@@ -16,8 +16,8 @@ class CartListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super(CartListView, self).get_context_data(**kwargs)
-        data['cart'] = Cart.objects.filter(user=self.request.user)
-        data['wish'] = Wish.objects.filter(user=self.request.user)
+        data['cart'] = Cart.objects.filter(user=self.request.user).select_related()
+        #data['wish'] = Wish.objects.filter(user=self.request.user)
         return data
 
     def get_queryset(self):
@@ -75,7 +75,7 @@ def cart_edit(request, pk, quantity):
         else:
             new_cart_item.delete()
 
-        cart_items = Cart.objects.filter(user=request.user).order_by('product__category')
+        cart_items = Cart.objects.filter(user=request.user).order_by('product__category').select_related()
 
         content = {
             'object_list': cart_items,

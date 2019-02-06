@@ -147,7 +147,6 @@ def order_forming_complete(request, pk):
 
 def get_product_price(request, pk):
     if request.is_ajax():
-        print('зашёл pk=', pk)
         product = Product.objects.filter(pk=int(pk)).first()
         if product:
             return JsonResponse({'price': product.cost})
