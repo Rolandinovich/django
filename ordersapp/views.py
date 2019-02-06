@@ -19,6 +19,7 @@ from django.http import JsonResponse
 from mainapp.models import Product
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from utils.main import disable_for_loaddata
 
 
 class OrderList(LoginRequiredMixin, ListView):

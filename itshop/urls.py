@@ -29,3 +29,8 @@ urlpatterns = [
                   path('order/', include('ordersapp.urls')),
                   path('auth/verify/google/oauth2/', include("social_django.urls", namespace="social")),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]

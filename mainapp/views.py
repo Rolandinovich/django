@@ -12,7 +12,7 @@ def main_view(request):
                'sale_products': Special_offers.objects.filter(sale=True),
                'best_selling_products': Special_offers.objects.filter(best_selling=True),
                'hot_dials': Hotdial.objects.all(),
-               'three_slide_news': Three_slide_news.objects.all()
+               'three_slide_news': Three_slide_news.objects.all().select_related(),
                }
     return render(request, 'mainapp/index.html', context)
 

@@ -4,6 +4,7 @@ from django.conf import settings
 from mainapp.models import Product
 
 
+
 # Create your models here.
 
 
