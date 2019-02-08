@@ -11,4 +11,5 @@ urlpatterns = [
     path('products/search/', mainapp.products_search, name='search'),
     path('products/<int:pk>/', mainapp.products_view, name='products'),
     path('products/<str:special>/', mainapp.products_view, name='products'),
+    path('get_user_content_ajax/', mainapp.get_user_content_ajax, name='user_content_ajax'),
 ]

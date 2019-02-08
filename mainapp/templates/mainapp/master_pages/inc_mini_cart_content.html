@@ -1,0 +1,49 @@
+                            <ul>
+                                <li>
+                                    <a href="{% url 'cartapp:view' %}">
+                                        <span class="cart-icon"><i class="fa fa-shopping-cart"></i></span>
+                                        <span class="cart-total">
+                                            {% if cart %}
+			                    					<span class="cart-title">Корзина</span>
+				                    				<span class="cart-item"> {{ cart.0.total_quantity }} шт.-</span>
+				                    				<span class="top-cart-price">{{ cart.0.total_cost }} &#x20BD;</span>
+                                            {% endif %}
+			                    				</span>
+                                    </a>
+                                    {% if cart %}
+                                        <div class="mini-cart-content">
+                                        {% for cartitem in cart %}
+                                        <div class="cart-img-details">
+                                            <div class="cart-img-photo">
+                                                <a href="{% url 'mainapp:product_details' cartitem.product.pk %}">
+                                                    <img src="{{ cartitem.product.image.url }}" alt="#"></a>
+                                            </div>
+                                            <div class="cart-img-content">
+                                                <a href="{% url 'mainapp:product_details' cartitem.product.pk %}">
+                                                    <h4>{{ cartitem.product.title }}</h4></a>
+                                                <span>
+															<strong class="text-right">{{ cartitem.quantity }} шт. -</strong>
+															<strong class="cart-price text-right">{{ cartitem.product_cost }}</strong>
+														</span>
+                                            </div>
+                                            <div class="pro-del">
+                                                <a href="{% url 'cartapp:remove' cartitem.product.pk %}"><i
+                                                        class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        {% endfor %}
+                                        <div class="cart-inner-bottom">
+													<span class="total">
+														Всего:
+														<span class="amount">{{ cart.0.total_cost }} &#x20BD;</span>
+													</span>
+                                            <span class="cart-button-top">
+														<a href="{% url 'cartapp:view' %}">Корзина</a>
+														<a href="{% url 'ordersapp:order_create' %}">Заказать</a>
+													</span>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                 </li>
+                            </ul>

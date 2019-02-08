@@ -69,31 +69,7 @@
                     <!-- Start Top-Link -->
                     <div class="top-link">
                         <ul class="link">
-                            {% if user.is_authenticated %}
-                            {% if user.is_superuser %}
-                            <li>
-                                <a href="{% url 'adminapp:users' %}">
-                                    <i class="fa fa-cogs"></i>Админка</a>
-                            </li>
-                            {% endif %}
-                            {% if user.first_name %}
-                            <li>{{ user.first_name }}</li>
-                            {% else %}
-                            <li>{{ user.username }}</li>
-                            {% endif %}
-                            <li><a href="{% url 'accounts:edit' %}"><i class="fa fa-user"></i> Мой аккаунт</a></li>
-                            <li><a href="{% url 'ordersapp:orders_list' %}"><i class="fa fa-money"></i> Заказы </a></li>
-                            <li><a href="{% url 'wishapp:view' %}"><i class="fa fa-heart"></i>
-                                Избранное
-                                {% if wish|length %}
-                                ({{ wish|length }})
-                                {% endif %}
-                            </a>
-                            </li>
-                            <li><a href="{% url 'accounts:logout' %}"><i class="fa fa-share"></i> Выйти</a></li>
-                            {% else %}
-                            <li><a href="{% url 'accounts:login' %}"><i class="fa fa-unlock-alt"></i> Войти</a></li>
-                            {% endif %}
+                        {% include 'mainapp/master_pages/inc_user_menu.html' %}
                         </ul>
                     </div>
                     <!-- End Top-Link -->
@@ -199,55 +175,7 @@
                             </form>
                         </div>
                         <div class="top-cart">
-                            <ul>
-                                <li>
-                                    <a href="{% url 'cartapp:view' %}">
-                                        <span class="cart-icon"><i class="fa fa-shopping-cart"></i></span>
-                                        <span class="cart-total">
-                                            {% if cart %}
-			                    					<span class="cart-title">Корзина</span>
-				                    				<span class="cart-item"> {{ cart.0.total_quantity }} шт.-</span>
-				                    				<span class="top-cart-price">{{ cart.0.total_cost }} &#x20BD;</span>
-                                            {% endif %}
-			                    				</span>
-                                    </a>
-                                    {% if cart %}
-                                    <div class="mini-cart-content">
-                                        {% for cartitem in cart %}
-                                        <div class="cart-img-details">
-                                            <div class="cart-img-photo">
-                                                <a href="{% url 'mainapp:product_details' cartitem.product.pk %}">
-                                                    <img src="{{ cartitem.product.image.url }}" alt="#"></a>
-                                            </div>
-                                            <div class="cart-img-content">
-                                                <a href="{% url 'mainapp:product_details' cartitem.product.pk %}">
-                                                    <h4>{{ cartitem.product.title }}</h4></a>
-                                                <span>
-															<strong class="text-right">{{ cartitem.quantity }} шт. -</strong>
-															<strong class="cart-price text-right">{{ cartitem.product_cost }}</strong>
-														</span>
-                                            </div>
-                                            <div class="pro-del">
-                                                <a href="{% url 'cartapp:remove' cartitem.product.pk %}"><i
-                                                        class="fa fa-times"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="clear"></div>
-                                        {% endfor %}
-                                        <div class="cart-inner-bottom">
-													<span class="total">
-														Всего:
-														<span class="amount">{{ cart.0.total_cost }} &#x20BD;</span>
-													</span>
-                                            <span class="cart-button-top">
-														<a href="{% url 'cartapp:view' %}">Корзина</a>
-														<a href="#">Оплата</a>
-													</span>
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                </li>
-                            </ul>
+                                    {% include 'mainapp/master_pages/inc_mini_cart_content.html' %}
                         </div>
                     </div>
                 </div>
@@ -459,5 +387,9 @@
 <!-- main JS
 ============================================ -->
 <script src="{% static 'js/main.js' %}"></script>
+<!-- load user data
+============================================ -->
+<script src="{% static 'js/get_user_content.js' %}"></script>
+
 </body>
 </html>

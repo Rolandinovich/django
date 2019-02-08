@@ -3,9 +3,7 @@ from django.conf import settings
 from mainapp.models import Product
 from django.shortcuts import get_object_or_404
 from django.core.validators import MinValueValidator
-
-
-
+from django.utils.functional import cached_property
 
 
 class CartQuerySet(models.QuerySet):
@@ -47,19 +45,26 @@ class Cart(models.Model):
 
     product_cost = property(_get_product_cost)
 
+    @cached_property
+    def get_items_cached(self):
+        return self.user.cart.select_related()
+
     def _get_total_quantity(self):
-        _items = Cart.objects.filter(user=self.user)
+        # _items = Cart.objects.filter(user=self.user)
+        _items = self.get_items_cached
         _totalquantity = sum(list(map(lambda x: x.quantity, _items)))
         return _totalquantity
 
     total_quantity = property(_get_total_quantity)
 
     def _get_total_cost(self):
-        _items = Cart.objects.filter(user=self.user)
+        # _items = Cart.objects.filter(user=self.user)
+        _items = self.get_items_cached
         _totalcost = sum(list(map(lambda x: x.product_cost, _items)))
         return _totalcost
 
     total_cost = property(_get_total_cost)
+
 
     def save(self, *args, **kwargs):
         if self.pk:
@@ -91,6 +96,3 @@ class Cart(models.Model):
             cart_item.save()
         else:
             cart_item.delete()
-
-
-

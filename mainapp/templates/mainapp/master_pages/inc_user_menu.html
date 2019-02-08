@@ -1,0 +1,26 @@
+
+    {% if user.is_authenticated %}
+    {% if user.is_superuser %}
+    <li>
+        <a href="{% url 'adminapp:users' %}">
+            <i class="fa fa-cogs"></i>Админка</a>
+    </li>
+    {% endif %}
+    {% if user.first_name %}
+    <li>{{ user.first_name }}</li>
+    {% else %}
+    <li>{{ user.username }}</li>
+    {% endif %}
+    <li><a href="{% url 'accounts:edit' %}"><i class="fa fa-user"></i> Мой аккаунт</a></li>
+    <li><a href="{% url 'ordersapp:orders_list' %}"><i class="fa fa-money"></i> Заказы </a></li>
+    <li><a href="{% url 'wishapp:view' %}"><i class="fa fa-heart"></i>
+        Избранное
+        {% if wish|length %}
+        ({{ wish|length }})
+        {% endif %}
+    </a>
+    </li>
+    <li><a href="{% url 'accounts:logout' %}"><i class="fa fa-share"></i> Выйти</a></li>
+    {% else %}
+    <li><a href="{% url 'accounts:login' %}"><i class="fa fa-unlock-alt"></i> Войти</a></li>
+    {% endif %}

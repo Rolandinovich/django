@@ -1,15 +1,29 @@
 from django.db import models
+from django.conf import settings
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
 
 
 # Формирование меню слева
 def get_menu():
-    main_menu = []
-    for m in Menu.objects.all().select_related():
-        submenu = []
-        for sm in Menu_element.objects.filter(menu__title=m.title).select_related():
-            submenu.append({'title': sm.category.title, 'pk': sm.pk})
-        main_menu.append({'title': m.title, 'submenu': submenu})
-    return main_menu
+    def get_links_menu():
+        links = []
+        for m in Menu.objects.all().select_related():
+            submenu = []
+            for sm in Menu_element.objects.filter(menu__title=m.title).select_related():
+                submenu.append({'title': sm.category.title, 'pk': sm.pk})
+            links.append({'title': m.title, 'submenu': submenu})
+        return links
+
+    if settings.LOW_CACHE:
+        key = 'links_menu'
+        links_menu = cache.get(key)
+        if links_menu is None:
+            links_menu = get_links_menu()
+            cache.set(key, links_menu)
+        return links_menu
+    else:
+        return get_links_menu()
 
 
 class Menu(models.Model):
@@ -104,7 +118,7 @@ class Product(models.Model):
         default=True
     )
     quantity = models.IntegerField(verbose_name='количество',
-                                           default=0)
+                                   default=0)
     modified = models.DateTimeField(
         auto_now=True
     )
@@ -116,6 +130,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def get_items():
+        return Product.objects.filter(is_active=True).order_by('category', 'title')
 
 
 # 3  специальных предложения с таймером
@@ -178,3 +196,49 @@ class Special_offers(models.Model):
     def __str__(self):
         return ' '.join(("new=", str(self.new), "sale=", str(self.sale), "best_selling=",
                          str(self.best_selling), self.product.title))
+
+
+def get_context_main_view():
+    if settings.LOW_CACHE:
+        key = 'hot_links'
+        hot_links = cache.get(key)
+        if hot_links is None:
+            hot_links = {'new_products': Special_offers.objects.filter(new=True).select_related(),
+                         'sale_products': Special_offers.objects.filter(sale=True).select_related(),
+                         'best_selling_products': Special_offers.objects.filter(best_selling=True).select_related(),
+                         'hot_dials': Hotdial.objects.all().select_related(),
+                         'three_slide_news': Three_slide_news.objects.all().select_related(),
+                         }
+            cache.set(key, hot_links)
+        return hot_links
+    else:
+        return {'new_products': Special_offers.objects.filter(new=True).select_related(),
+                'sale_products': Special_offers.objects.filter(sale=True).select_related(),
+                'best_selling_products': Special_offers.objects.filter(best_selling=True).select_related(),
+                'hot_dials': Hotdial.objects.all().select_related(),
+                'three_slide_news': Three_slide_news.objects.all().select_related(),
+                }
+
+
+def get_category(pk):
+    if settings.LOW_CACHE:
+        key = f'category_{pk}'
+        category = cache.get(key)
+        if category is None:
+            category = get_object_or_404(Category, pk=pk)
+            cache.set(key, category)
+        return category
+    else:
+        return get_object_or_404(Category, pk=pk)
+
+
+def get_product(pk):
+    if settings.LOW_CACHE:
+        key = f'product_{pk}'
+        product = cache.get(key)
+        if product is None:
+            product = get_object_or_404(Product, pk=pk)
+            cache.set(key, product)
+        return product
+    else:
+        return get_object_or_404(Product, pk=pk)
