@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import F
+
 from mainapp.models import Product
 from django.shortcuts import get_object_or_404
 from django.core.validators import MinValueValidator
@@ -65,7 +67,6 @@ class Cart(models.Model):
 
     total_cost = property(_get_total_cost)
 
-
     def save(self, *args, **kwargs):
         if self.pk:
             self.product.quantity -= self.quantity - self.__class__.objects.get(pk=self.pk).quantity
@@ -80,7 +81,7 @@ class Cart(models.Model):
         product = get_object_or_404(Product, pk=pk)
         old_cart_item = Cart.objects.filter(user=request.user, product=product)
         if old_cart_item:
-            old_cart_item[0].quantity += ADD_QUANTITY
+            old_cart_item[0].quantity = F('quantity') + ADD_QUANTITY
             old_cart_item[0].save()
         else:
             new_cart_item = Cart(user=request.user, product=product)
@@ -92,7 +93,7 @@ class Cart(models.Model):
         product = get_object_or_404(Product, pk=pk)
         cart_item = Cart.objects.get(user=request.user, product=product)
         if cart_item.quantity > 1:
-            cart_item.quantity -= 1
+            cart_item.quantity = F('quantity') - 1
             cart_item.save()
         else:
             cart_item.delete()

@@ -82,6 +82,7 @@ class Product(models.Model):
     )
     category = models.ForeignKey(
         Category,
+        related_name='product_set',
         on_delete=models.CASCADE
     )
 

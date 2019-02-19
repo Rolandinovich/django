@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -117,9 +118,9 @@ class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
 def product_quantity_update_save(sender, update_fields, instance, **kwargs):
     if update_fields is 'quantity' or 'product':
         if instance.pk:
-            instance.product.quantity -= instance.quantity - sender.objects.get(pk=instance.pk).quantity
+            instance.product.quantity = F('quantity') - instance.quantity - sender.objects.get(pk=instance.pk).quantity
         else:
-            instance.product.quantity -= instance.quantity
+            instance.product.quantity = F('quantity') - instance.quantity
         instance.product.save()
 
 

@@ -1,6 +1,8 @@
 from django.db import models
 
 from django.conf import settings
+from django.db.models import F
+
 from mainapp.models import Product
 
 
@@ -96,6 +98,6 @@ class OrderItem(models.Model):
         return self.product.cost * self.quantity
 
     def delete(self):
-        self.product.quantity += self.quantity
+        self.product.quantity = F('quantity')+self.quantity
         self.product.save()
         super(self.__class__, self).delete()
