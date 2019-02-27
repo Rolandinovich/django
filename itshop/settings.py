@@ -65,7 +65,7 @@ MIDDLEWARE = [
 
 if DEBUG:
     def show_toolbar(request):
-        return False
+        return DEBUG
 
 
     DEBUG_TOOLBAR_CONFIG = {

@@ -1,3 +1,5 @@
+from functools import wraps
+
 from django.db.models import F
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
@@ -21,6 +23,18 @@ from mainapp.models import Product
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from utils.main import disable_for_loaddata
+
+
+def disable_for_loaddata(signal_handler):
+    """Decorator that turns off signal handlers when loading fixture data.
+    """
+
+    @wraps(signal_handler)
+    def wrapper(*args, **kwargs):
+        if kwargs['raw']:
+            return
+        signal_handler(*args, **kwargs)
+    return wrapper
 
 
 class OrderList(LoginRequiredMixin, ListView):
@@ -115,6 +129,7 @@ class OrderItemsUpdate(LoginRequiredMixin, UpdateView):
 
 
 @receiver(pre_save, sender=OrderItem)
+@disable_for_loaddata
 def product_quantity_update_save(sender, update_fields, instance, **kwargs):
     if update_fields is 'quantity' or 'product':
         if instance.pk:

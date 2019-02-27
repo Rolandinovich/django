@@ -1,9 +1,22 @@
+from functools import wraps
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
 from datetime import timedelta
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+def disable_for_loaddata(signal_handler):
+    """Decorator that turns off signal handlers when loading fixture data.
+    """
+
+    @wraps(signal_handler)
+    def wrapper(*args, **kwargs):
+        if kwargs['raw']:
+            return
+        signal_handler(*args, **kwargs)
+    return wrapper
 
 
 class Account(AbstractUser):
@@ -64,10 +77,12 @@ class AccountProfile(models.Model):
                               choices=GENDER_CHOICES, blank=True)
 
     @receiver(post_save, sender=Account)
+    @disable_for_loaddata
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             AccountProfile.objects.create(user=instance)
 
     @receiver(post_save, sender=Account)
+    @disable_for_loaddata
     def save_user_profile(sender, instance, **kwargs):
         instance.accountprofile.save()
