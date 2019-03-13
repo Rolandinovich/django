@@ -11,7 +11,7 @@
         {% endif %}
         <div class="order_name">
             Номер заказа: {{ object.pk }}<br>
-            Статус заказа: {{ object.status }}
+            Статус заказа: {{ object.get_status_display }}
         </div>
         <div class="order_actions">
             <button>
